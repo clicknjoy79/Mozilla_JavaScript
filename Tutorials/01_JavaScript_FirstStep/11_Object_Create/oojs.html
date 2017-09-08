@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Object-oriented JavaScript example</title>
+</head>
+
+<body>
+<div>
+    <label for="jscode">Enter code:</label>
+    <input type="text" id="jscode">
+    <button>Submit code</button>
+</div>
+
+<p></p>
+</body>
+
+<script>
+    /*
+    생성된 객체들을 브라우저의 input 창에 찍어볼 것...
+     */
+
+    var input = document.querySelector('input');
+    var btn = document.querySelector('button');
+    var para = document.querySelector('p');
+    btn.onclick = function() {
+        var code = input.value;
+        para.textContent = eval(code);
+    }
+
+    function createNewPerson(name) {
+        var obj = {};
+        obj.name = name;
+        obj.greeting = function() {
+            alert('Hi! I\'m ' + this.name + '.');
+        };
+        return obj;
+    }
+    var salva = createNewPerson('Salva');
+
+    function Person(first, last, age, gender, interests) {
+        this.name = {
+            first,
+            last
+        };
+        this.age = age;
+        this.gender = gender;
+        this.interests = interests;
+        this.bio = function() {
+            alert(this.name.first + ' ' + this.name.last + ' is ' + this.age + ' years old. He likes ' + this.interests[0] + ' and ' + this.interests[1] + '.');
+        };
+        this.greeting = function() {
+            alert('Hi! I\'m ' + this.name.first + '.');
+        };
+    }
+    var person1 = new Person('Bob', 'Smith', 32, 'male', ['music', 'skiing']);
+
+    var person  = new Object();
+    person.name = 'Chris';
+    person['age'] = 38;
+    person.greeting = function() {
+        alert('Hi! I\'m ' + this.name + '.');
+    }
+
+    var person2 = new Object({
+       name: 'Paul',
+        age: 48,
+        greeting: function() {
+           alert('Hi! I\'m ' + this.name + '.');
+        }
+    });
+
+    var person3 = Object.create(person2);
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

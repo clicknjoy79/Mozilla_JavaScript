@@ -23,5 +23,31 @@
         var code = input.value;
         para.textContent = eval(code);
     }
+
+    var person = {
+        name: {
+            first: 'Bob',
+            last: 'Smith'
+        },
+        age: 32,
+        gender: 'male',
+        interests: ['music', 'skiing'],
+        bio: function() {
+            alert(this.name.first + ' ' + this.name.last + 'is ' + this.age + ' years old. He likes ' + this.interests[0] + ' and ' + this.interests[1] + '.');
+        },
+        greeting: function() {
+            alert('Hi I\'m ' + this.name.first + '.');
+        }
+    };
+
+    /*
+    var myDataName = 'height';
+    var myDataValue = '1.75m';
+    person[myDataName] = myDataValue;   // 변수(myDataName)를 member property로 할당 가능
+    console.log(person.height) = 1.75m
+
+    . dot 방식으로는 뒤에 변수가 올 수 없다. 뒤에 오는 것이 member 이름이 된다.
+    person.myDataName = myDataValue;  ==> myDataName이라는 member가 생김김
+     *
 </script>
 </html>
