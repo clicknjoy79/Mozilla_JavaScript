@@ -5,6 +5,8 @@
  *    그러나 Arrow Function은 자신만의 this를 생성하지 않는다.
  * 3. 생성자로 사용 불가능 ==> prototype 도 없다...
  * 4. Generator로 사용 불가능하다.(yield 사용 불가능)
+ * Arrow functions do not have their own this value.
+ * The value of this inside an arrow function is always inherited from the enclosing scope.
  */
 window.age = 0;
 var interval;
@@ -28,13 +30,13 @@ setTimeout(function() {
 
 // 아래처럼 하면 해결되기는 하나 깔끔하지 않아.....
 function Man() {
-    var that = this;
-    that.age = 0;
+    var self = this;
+    self.age = 0;
 
     setInterval(function growUp() {
         // The callback refers to the `that` variable of which
         // the value is the expected object.
-        that.age++;
+        self.age++;
     }, 1000);
 }
 var man = new Man();
@@ -213,23 +215,156 @@ foo_a(); // The segment "function() {\n\talert(bar);\n}" of the function body st
 // 이름이 있는 익명 함수(fac)는 함수 내부에서 다시 쓰일 수 있다.
 var factorial = function fac(n) { return n < 2 ? 1 : n * fac(n - 1); };
 
-console.log(factorial(4));
+console.log(factorial(4));  // 24
 
+/****************************************************************************/
 
+function walkTree(node) {
+    if (node == null) //
+        return;
+    // do something with node
+    for (var i = 0; i < node.childNodes.length; i++) {
+        walkTree(node.childNodes[i]);
+    }
+}
 
+/****************************************************************************/
+// 함수 내부에 선언된 함수는 클로저를 구성한다.
+/**
+ *Notice how x is preserved when inside is returned.
+ * A closure must preserve the arguments and variables in all scopes it references.
+ * Since each call provides potentially different arguments,
+ * a new closure is created for each call to outside.
+ * The memory can be freed only when the returned inside is no longer accessible.
+ *
+ * 내부 함수는 '선언 당시' 의 Context에 해당하는 변수들의 참조값들을 클로저에 저장한다.
+ * x를 객체로 생각하고 x에 값이 전달되면 x는 주소값이므로 inside 클로저에 x의 주소값이 저장된다.
+ * 외부 함수가 실행될 때마다 내부 함수에 각각의 클로저가 생성되는데 클로저에는 접근가능한 변수의
+ * 주소값이 저장된다....(함수 내부에 property로 저장된다고 생각하면 될 듯)
+ * 따라사 해당 함수가 사용가능하다면(외부로 함수가 리턴) 함수(클로저)에 저장된 변수에 접근할 수 있다.....
+ */
+function outside(x) {
+    function inside(y) {
+        return x + y;
+    }
+    return inside;
+}
+fn_inside = outside(3); // Think of it like: give me a function that adds 3 to whatever you give it
+result = fn_inside(5); // returns 8
+console.log(result);
 
+result1 = outside(3)(5); // returns 8
+console.log(result1);
 
+/****************************************************************************/
 
+var pet = function(name) {   // The outer function defines a variable called "name"
+    var getName = function() {
+        return name;   // 외부 함수가 실행되면 내부 함수가 선언이 되는 데 이때 클로저를 구성한다.(그리고 내부에 name 참조 값을 저장한다.)
+    }
+    return getName;    // getName has closure and in the clousure there exists name reference
+}
+myPet = pet('Vivie');
 
+console.log(myPet());                     // Returns "Vivie"
 
+/****************************************************************************/
 
+var createPet = function(name) {
+    var sex;
 
+    return {
+        setName: function(newName) {
+            name = newName;
+        },
 
+        getName: function() {
+            return name;
+        },
 
+        getSex: function() {
+            return sex;
+        },
 
+        setSex: function(newSex) {
+            if(typeof newSex === 'string' && (newSex.toLowerCase() === 'male' || newSex.toLowerCase() === 'female')) {
+                sex = newSex;
+            }
+        }
+    }
+}
 
+// createPet 함수가 실행이 되면 return 구문의 내부 함수들이 선언되면서 각각 클로저가 구성된다.
+// 각각의 클로저는 (name, sex reference를 공유한다)
+var pet = createPet('Vivie');
+pet.getName();                  // Vivie
 
+pet.setName('Oliver');
+pet.setSex('male');
+console.log(pet.getSex());                   // male
+console.log(pet.getName());                  // Oliver
 
+/****************************************************************************/
+
+var getCode = (function() {
+    var secureCode = '0]Eal(eh&2';    // A code we do not want outsiders to be able to modify...
+
+    return function() {     // 익명함수는 클로저를 구성(내부에 secureCode reference를 가지게 된다)
+        return secureCode;
+    };
+}());
+
+console.log(getCode());    // Returns the secureCode
+
+/****************************************************************************/
+
+// 외부 변수의 이름과 내부 변수의 이름이 같으면 안됨....주의할 것....
+var createPet = function(name) {  // Outer function defines a variable called "name"
+    return {
+        setName: function(name) {    // Enclosed function also defines a variable called "name"
+            name = name;               // ??? How do we access the "name" defined by the outer function ???
+        }
+    }
+}
+
+function myConcat(separator) {
+    var result = '';
+
+    var i;
+
+    for (var i = 1; i < arguments.length; i++) {
+        result += arguments[i] + separator;
+    }
+    return result;
+}
+
+console.log(myConcat(', ', 'red', 'orange', 'blue'));
+console.log(myConcat('; ', 'elephant', 'giraffe', 'lion', 'cheetah'));
+console.log(myConcat('. ', 'sage', 'basil', 'oregano', 'pepper', 'parsley'));
+
+/****************************************************************************/
+
+function multiply(a, b) {
+    b = typeof b !== 'undefined' ?  b : 1;  // 번거롭다....
+
+    return a * b;
+}
+console.log(multiply(5)); // 5
+
+// Default Parameters
+function multiply(a, b = 1) {
+    return a * b;
+}
+
+console.log(multiply(5)); // 5
+
+// Rest Parameters
+function multiply(multiplier, ...TheArgs) {
+    return TheArgs.map(x => multiplier * x);
+}
+
+var arr = multiply(2, 1, 2, 3, 4);
+console.log(arr);
 
 
 
