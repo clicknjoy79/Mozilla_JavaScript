@@ -22,7 +22,17 @@ var str = '\u{1F600}';
 console.log(str);   // 웃는 글자 표시됨
 console.log(str.length);    // 2  (이런 글자가 포함되어 있는 경우 length 를 사용은 의미가 없음......)
 
+// Template literal
+var a = 5;
+var b = 10;
+console.log(`Fifteen is ${a + b} and \nnot ${2 * a + b}.`);
 
+var names = ['Hochberg', 'Hönigswald', 'Holzman'];
+var germanPhonebook = new Intl.Collator('de-De-u-co-phonebk');
+console.log(names.sort(germanPhonebook.compare).join(','));
+
+var germanDictionary = new Intl.Collator('de-De-u-co-dict');
+console.log(names.sort(germanDictionary.compare).join(','));
 
 
 
