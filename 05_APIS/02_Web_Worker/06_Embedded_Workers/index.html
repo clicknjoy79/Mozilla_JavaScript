@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Embedded Worker</title>
+    <script type="text/js-worker">
+        // This script WON'T be parsed by JS engines because its MIME type is text/js-worker.
+        var queryableFunctions = {
+            getDifference: function(nMinuend, nSubtrahend) {
+                reply('printStuff', nMinuend - nSubtrahend);
+            },
+            waitSomeTime: function() {
+                setTimeout(function() { reply('doAlert', 3, 'seconds');}, 3000);
+            }
+        }
+
+        function defaultReply(message) {
+            // your default PUBLIC function executed only when main page calls the queryableWorker.postMessage() method directly
+            // do something
+            postMessage(message);
+        }
+        // Rest of your worker code goes here.
+    </script>
+    <script type="text/js-worker">
+        function reply() {
+            if (arguments.length < 1) { throw new TypeError('reply - not enough arguments'); return ;}
+            postMessage({ 'queryMethodListener': arguments[0], 'queryMethodArguments': Array.prototype.slice.call(arguments, 1) });
+        }
+
+        onmessage = function(oEvent) {
+            if (oEvent.data instanceof Object &&
+                    oEvent.data.hasOwnProperty('queryMethod') &&
+                    oEvent.data.hasOwnProperty('queryMethodArguments')) {
+                queryableFunctions[oEvent.data.queryMethod].apply(self, oEvent.data.queryMethodArguments);  // self 는 Worker Thread의 GlobalScope(window 같은 것)을 의미한다.
+            } else {
+                defaultReply(oEvent.data);
+            }
+        }
+    </script>
+</head>
+<body>
+<ul>
+    <li><a id="firstLink" href="javascript:myTask.sendQuery('getDifference', 5, 3);">What is the difference 5 and 3?</a></li>
+    <li><a href="javascript:myTask.sendQuery('waitSomeTime')">Wait 3 seconds</a></li>
+    <li><a href="javascript:myTask.postMessage('direct called postMessage')">Direct postMessage called</a></li>
+    <li><a href="javascript:terminate();">terminate() the Worker</a></li>
+</ul>
+<script src="main.js"></script>
+</body>
+</html>

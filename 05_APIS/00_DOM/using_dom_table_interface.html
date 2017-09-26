@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Using DOM table interface</title>
+</head>
+<body>
+<table id="table0">
+    <tr>
+        <td>Row 0 Cell 0</td>
+        <td>Row 0 Cell 1</td>
+    </tr>
+</table>
+
+<script>
+// To add a row and some cells to an existing table:
+    var table = document.getElementById('table0');
+    var row = table.insertRow(-1);
+    var cell, text;
+
+    for (var i = 0; i < 2; i++) {
+        cell = row.insertCell(-1);
+        text = 'Row ' + row.rowIndex + ' Cell ' + i;
+        cell.appendChild(document.createTextNode(text));
+    }
+
+    // 테이블에 innerHTML 을 사용하지 말 것
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

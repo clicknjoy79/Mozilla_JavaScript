@@ -23,7 +23,7 @@ window.onload = function() {
 };
 // If the property is not explicitly removed or nulled,
 // a reference-counting garbage collector will always have at least one reference intact and
-// will keep the DOM element in memory even if it was removed from the DOM tree.
+// will keep the 00_DOM element in memory even if it was removed from the 00_DOM tree.
 
 
 // Mark-and-sweep algorithm

@@ -5,6 +5,21 @@
     <title>Title</title>
 </head>
 <body>
+<ul>
+    <li>list1</li>
+    <li>list2</li>
+    <li>list3</li>
+</ul>
+
+<!--아래에서 this는 button을 의미한다. this가 외부에 선언되어 있음-->
+<button onclick="alert(this.tagName.toLowerCase());">
+    Show this
+</button>
+
+<!--인라인에서 함수가 선언되고 내부에 this가 있는 경우에는 window 객체를 의미한다.-->
+<button onclick="alert((function() { return this; })());">
+    Show inner this
+</button>
 
 <script src="main.js"></script>
 </body>

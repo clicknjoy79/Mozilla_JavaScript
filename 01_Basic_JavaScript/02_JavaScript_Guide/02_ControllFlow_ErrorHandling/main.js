@@ -138,7 +138,7 @@ try {
 /**
  *  innerHTML()보다 훨씬 빠른 insertAdjacentHTML()
 
- 파이어폭스가 8.0으로 업그레이드되면서 새로운 DOM Node 함수로 insertAdjacentHTML()가 추가되었다고 한다.
+ 파이어폭스가 8.0으로 업그레이드되면서 새로운 00_DOM Node 함수로 insertAdjacentHTML()가 추가되었다고 한다.
 
  간단히 설명하자면...
 
@@ -151,7 +151,7 @@ try {
  element.innerHTML += "<div> 한날당 <span> FTA </span> 날치기 </div>";
 
 
- 그러나 이런 방식은 DOM Parsing 과정에서, 기존 하위 Node들의 Node Tree가 삭제되고 재구성되는 과정이 추가되므로, 실행 시간 낭비는 필연적이었다.
+ 그러나 이런 방식은 00_DOM Parsing 과정에서, 기존 하위 Node들의 Node Tree가 삭제되고 재구성되는 과정이 추가되므로, 실행 시간 낭비는 필연적이었다.
 
  이런 폐단을 방지하기위해, 어떤 HTML element에 대한 상대적인 삽입 위치를 지정하도록 하여, 기존 하위 Node는 건드리지 않는 HTML tag 삽입 함수가 필요하게 되었는데, 이 함수가 바로 insertAdjacentHTML()이다.
 

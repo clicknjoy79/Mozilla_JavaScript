@@ -120,26 +120,94 @@ console.log(fn() === obj);      // true
 var fn2 = obj.bar;
 console.log(fn2()() === window);      // true
 
+var thisArg = { foo: 'bar' };
+console.log(foo.call(thisArg));  // Window Object  : thisArg 무시됨.....
 
+// As an object method
+var o = {
+    prop: 37,
+    f: function() {     // inline function
+        return this.prop;
+    }
+};
 
+console.log(o.f());     // 37
 
+var o = { prop: 37 };
+function independent() {
+    return this.prop;
+}
+// Example1
+o.f = independent;
+console.log(o.f());     // 37
+// Example2
+o.b = { g: independent, prop: 42 };
+console.log(o.b.g());   // 42
 
+// this on the object's prototype chain
+var o = { f:function () { return this.a + this.b; }};
+var p = Object.create(o);
+p.a = 1;
+p.b = 4;
+console.log(p.f());     // 5
 
+// this with a getter or setter
+function sum() {
+    return this.a + this.b + this.c;
+}
 
+var o = {
+    a: 1,
+    b: 2,
+    c: 3,
+    get average() {
+        return (this.a + this.b + this.c) / 3;
+    }
+};
 
+Object.defineProperty(o, 'sum', {
+    get: sum, enumerable: true, configurable: true
+});
 
+console.log(o.average, o.sum);      // 2  6
 
+// As a constructor
+// 생성자 함수에서 다른 오브젝트를 리턴하면 그게 생성한 오브젝트가 된다.
+function C() {
+     this.a = 37;
+}
 
+var o =new C();
+console.log(o.a);       // 37
 
+function C2() {
+    this.a = 37;    // no outside effects: this Object discarded
+    return { a: 38 };
+}
 
+o = new C2();
+console.log(o.a);       // 38
 
+// As a 00_DOM event handler
+// 이벤트 핸들러 함수에서 e.currentTarget은 이벤트가 버블링 되거나
+// 캡처링 되는 경우에 현재 엘리먼트를 의미한다.
+// 이벤트 핸들러 함수에서 e.target은 이벤트가 태초에 발생한 엘리먼트를 의미한다.
+// 이벤트 핸들러 함수에서 this는 currentTarget을 의미한다.
 
+function bluify(e) {
+    // Always true
+    console.log(this === e.currentTarget);
+    // true when currentTarget and target are the same object
+    console.log(this === e.target);
+    this.style.backgroundColor = '#A5D9F3';
+}
 
+var elements = document.getElementsByTagName('*');
+for (var i = 0; i < elements.length; i++) {
+    elements[i].addEventListener('click', bluify, false);
+}
 
-
-
-
-
+// In an in-line event handler
 
 
 

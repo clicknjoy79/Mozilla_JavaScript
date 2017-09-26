@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<ul>
+    <li><a id="firstLink" href="javascript:myTask.sendQuery('getDifference', 5, 3);">What is the difference 5 and 3?</a></li>
+    <li><a href="javascript:myTask.sendQuery('waitSomeTime')">Wait 3 seconds</a></li>
+    <li><a href="javascript:myTask.postMessage('direct called postMessage')">Direct postMessage called</a></li>
+    <li><a href="javascript:terminate();">terminate() the Worker</a></li>
+</ul>
+<script src="main.js"></script>
+</body>
+</html>

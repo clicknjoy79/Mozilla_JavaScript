@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<script>
+    var ss = document.styleSheets;
+
+    for (var i = 0; i < ss.length; i++) {
+        for (var j = 0; j < ss[i].cssRules.length; j++) {
+            console.log(ss[i].cssRules[j].selectorText);    // BODY P #LUMPY
+        }
+    }
+</script>
+</body>
+</html>

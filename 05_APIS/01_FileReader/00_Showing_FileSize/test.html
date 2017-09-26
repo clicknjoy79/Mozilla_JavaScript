@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Files Size</title>
+</head>
+<body onload="updateSize()">
+<form name="uploadForm">
+    <p><input id="uploadInput" type="file" name="myFiles" onchange="updateSize();" multiple> selected files: <span id="fileNum">0</span>; total size: <span id="fileSize">0</span></p>
+    <p><input type="submit" value="Send file"></p>
+</form>
+
+
+<script src="main.js"></script>
+</body>
+</html>
